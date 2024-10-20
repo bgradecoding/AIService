@@ -50,7 +50,7 @@ Temporary Items
 # production
 /build
 
-.env
+
 
 # misc
 *.pem
