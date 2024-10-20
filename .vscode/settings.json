@@ -1,0 +1,11 @@
+{
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#ec0970",
+    "titleBar.inactiveBackground": "#ec0970",
+    "titleBar.border": "#ec0970"
+  },
+  "explorer.compactFolders": false,
+  "git.ignoreLimitWarning": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+}
