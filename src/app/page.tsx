@@ -1,5 +1,9 @@
-import { redirect } from "next/navigation";
+'use client';
 
 export default function Home() {
-  redirect("/ko");
+  return (
+    <>
+      <h1>Home</h1>
+    </>
+  );
 }
