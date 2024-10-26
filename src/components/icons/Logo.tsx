@@ -1,20 +1,23 @@
 import { SVGProps } from 'react';
-const LogoIcon = (props: SVGProps<SVGSVGElement>) => (
+
+const LogoIcon = ({
+  width = '1em',
+  height = '1em',
+  ...props
+}: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={50}
-    height={51}
+    width={width}
+    height={height}
+    viewBox="0 0 50 50.5"
     fill="none"
     {...props}
   >
     <path
       fill="#C00C3F"
       d="M12.018 3.762c-5.181 3.615-7.074 5.93-9.644 10.289L29.822.97C23.018.082 19.161.169 12.018 3.762ZM18.1 13.169S6.12 19.32 0 23.898v5.732C15.843 19.47 25.245 14.64 43.62 8.76l-4.154-3.234C31.372 7.229 18.1 13.169 18.1 13.169ZM27.448 21.987 2.374 34.186l1.929 3.968L29.822 26.25l1.929 4.116L39.02 18.9l-13.353-.441 1.78 3.527ZM49.407 23.163C34.47 32.343 25.358 36.79 7.418 43.445l4.6 3.38s11.936-3.863 19.14-7.348C38.89 35.737 50 28.16 50 28.16l-.593-4.997ZM46.142 38.595 23.145 50.5c5.526-.312 8.503-.914 13.502-3.086 4.542-3.026 6.497-5.016 9.495-8.819Z"
-      style={{
-        fill: '#c00c3f',
-        fillOpacity: 1,
-      }}
     />
   </svg>
 );
+
 export default LogoIcon;
