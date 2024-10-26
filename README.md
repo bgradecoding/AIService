@@ -8,6 +8,12 @@ First, run the development server:
 yarn dev
 ```
 
+### Install
+
+```bash
+yarn
+```
+
 ## Commitizen
 
 ```bash
