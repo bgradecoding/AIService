@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LogoIcon from '../icons/Logo';
+import Link from 'next/link';
+import { MENU_LIST } from '@/constants/biz';
 
 const Header = () => {
   return (
@@ -11,26 +13,13 @@ const Header = () => {
         <Logo />
         <div className="justify-start items-center gap-[308px] flex">
           <div className="w-[406px] h-[25px] justify-center items-start gap-10 flex">
-            <div className="justify-center items-center flex">
-              <div className="text-center text-[#c00c3f] text-base font-bold">
-                Home
+            {MENU_LIST().map((v) => (
+              <div key={v.id} className="justify-center items-center flex">
+                <div className="text-center text-[#c00c3f] text-base font-bold">
+                  {v.menuName}
+                </div>
               </div>
-            </div>
-            <div className="justify-center items-center flex">
-              <div className="text-center text-neutral-700 text-base font-normal">
-                Courses
-              </div>
-            </div>
-            <div className="justify-center items-center flex">
-              <div className="text-center text-neutral-700 text-base font-normal">
-                Contact us
-              </div>
-            </div>
-            <div className="justify-center items-center flex">
-              <div className="text-center text-neutral-700 text-base font-normal">
-                About us
-              </div>
-            </div>
+            ))}
           </div>
         </div>
         <div className="justify-end items-center gap-4 flex">

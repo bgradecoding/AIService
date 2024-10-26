@@ -1,5 +1,13 @@
 {
-    "common": {
-        "title": "STS"
+  "common": {
+    "title": "STS"
+  },
+  "menu": {
+    "main": {
+      "home": "홈",
+      "courses": "과정",
+      "challenges": "챌린지",
+      "dashboard": "대시보드"
     }
+  }
 }

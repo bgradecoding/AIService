@@ -1,5 +1,13 @@
 {
-    "common": {
-        "title": "STS"
+  "common": {
+    "title": "STS"
+  },
+  "menu": {
+    "main": {
+      "home": "home",
+      "courses": "courses",
+      "challenges": "challenges",
+      "dashboard": "dashboard"
     }
+  }
 }
