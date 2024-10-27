@@ -1,6 +1,18 @@
 {
   "common": {
-    "title": "STS"
+    "title": "STS",
+    "login": "로그인"
+  },
+  "main": {
+    "banner": {
+      "title": "영업 스킬, 이제 AI로 더 스마트하게",
+      "description": "혁신적이고 효과적인 방식으로 여러분의 영업 능력을 향상시켜 드립니다.",
+      "button": "트레이닝 시작하기"
+    },
+    "popularCourses": {
+      "title": "인기 코스",
+      "seeAllCourses": "모든 코스 보기"
+    }
   },
   "menu": {
     "main": {

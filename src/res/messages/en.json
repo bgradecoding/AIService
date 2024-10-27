@@ -1,6 +1,18 @@
 {
   "common": {
-    "title": "STS"
+    "title": "STS",
+    "login": "login"
+  },
+  "main": {
+    "banner": {
+      "title": "Sales Skill Training, Now Smart with AI",
+      "description": "Improve your sales skills with innovative and effective methods.",
+      "button": "Start Training"
+    },
+    "popularCourses": {
+      "title": "Popular Courses",
+      "seeAllCourses": "See All Courses"
+    }
   },
   "menu": {
     "main": {

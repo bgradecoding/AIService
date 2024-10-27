@@ -22,7 +22,7 @@ export const NextLayout = ({ children }: Props) => {
   return (
     <>
       <Header />
-      {children}
+      <div className="pt-14 md:pt-24">{children}</div>
     </>
   );
 };

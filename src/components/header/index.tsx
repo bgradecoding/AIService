@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import cn from 'classnames';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { MENU_LIST } from '@/constants/biz';
 import LogoIcon from '../icons/Logo';
-
+import { useTranslations } from 'next-intl';
 // 타입 정의
 type MenuItem = {
   id: number;
@@ -16,6 +16,7 @@ type MenuItem = {
 const useMenu = () => {
   const [selected, setSelected] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const selectMenuItem = (id: number) => {
@@ -23,7 +24,20 @@ const useMenu = () => {
     setIsMenuOpen(false);
   };
 
-  return { selected, isMenuOpen, toggleMenu, selectMenuItem };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  return { selected, isMenuOpen, toggleMenu, selectMenuItem, menuRef };
 };
 
 // 컴포넌트 분리
@@ -117,24 +131,27 @@ const MenuItems = ({
   </div>
 );
 
-const LoginButton = () => (
-  <div className="absolute right-0 justify-end items-center gap-4 flex">
-    <div className="justify-start items-end gap-6 flex">
-      <div className="h-[30px] justify-center items-center gap-2 flex">
-        <div className="grow shrink basis-0 text-center text-neutral-700 text-xl font-normal">
-          login
-        </div>
-      </div>
+const LoginButton = () => {
+  const t = useTranslations('common');
+  return (
+    <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+      <button className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 md:px-6 md:py-2 md:text-base">
+        {t('login')}
+      </button>
     </div>
-  </div>
-);
+  );
+};
 
 const Header = () => {
-  const { selected, isMenuOpen, toggleMenu, selectMenuItem } = useMenu();
+  const { selected, isMenuOpen, toggleMenu, selectMenuItem, menuRef } =
+    useMenu();
 
   return (
-    <nav className="w-full fixed h-14 md:h-24 py-3 md:py-7 z-[20] border-b border-[#bdbdbd] shadow-sm flex justify-center">
-      <div className="justify-center flex w-full mx-[5%] relative">
+    <nav className="w-full fixed h-14 md:h-24 py-3 md:py-7 z-[20] border-b border-[#bdbdbd] shadow-sm flex justify-center bg-white">
+      <div
+        className="justify-center flex w-full mx-[5%] relative"
+        ref={menuRef}
+      >
         <HamburgerIcon isOpen={isMenuOpen} onClick={toggleMenu} />
         <Logo />
         <MenuItems
