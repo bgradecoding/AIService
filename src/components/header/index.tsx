@@ -6,22 +6,39 @@ import { FiMenu, FiX } from 'react-icons/fi';
 import { MENU_LIST } from '@/constants/biz';
 import LogoIcon from '../icons/Logo';
 import { useTranslations } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation'; // 추가
 // 타입 정의
 type MenuItem = {
   id: number;
   menuName: string;
+  url: string; // url 속성 추가
 };
 
 // Custom hook
 const useMenu = () => {
-  const [selected, setSelected] = useState<number>(1);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const [selected, setSelected] = useState<number>(1); // 기본값으로 초기화
+
+  // pathname이 준비되면 selected 상태를 업데이트
+  useEffect(() => {
+    if (pathname) {
+      const currentMenuItem = MENU_LIST().find((item) => item.url === pathname);
+      if (currentMenuItem) {
+        setSelected(currentMenuItem.id);
+      }
+    }
+  }, [pathname]);
+
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const selectMenuItem = (id: number) => {
+  const selectMenuItem = (id: number, url: string) => {
+    // url 파라미터 추가
     setSelected(id);
     setIsMenuOpen(false);
+    router.push(url); // URL 이동 추가
   };
 
   useEffect(() => {
@@ -107,7 +124,7 @@ const MenuItems = ({
 }: {
   isOpen: boolean;
   selected: number;
-  onSelect: (id: number) => void;
+  onSelect: (id: number, url: string) => void; // url 파라미터 추가
 }) => (
   <div
     className={cn(
@@ -124,7 +141,7 @@ const MenuItems = ({
           key={item.id}
           item={item}
           isSelected={selected === item.id}
-          onClick={() => onSelect(item.id)}
+          onClick={() => onSelect(item.id, item.url)} // url 전달
         />
       ))}
     </div>
