@@ -7,6 +7,7 @@ import { MENU_LIST } from '@/constants/biz';
 import LogoIcon from '../icons/Logo';
 import { useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation'; // 추가
+import Link from 'next/link';
 // 타입 정의
 type MenuItem = {
   id: number;
@@ -152,9 +153,12 @@ const LoginButton = () => {
   const t = useTranslations('common');
   return (
     <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
-      <button className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 md:px-6 md:py-2 md:text-base">
+      <Link
+        href="/login"
+        className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 md:px-6 md:py-2 md:text-base"
+      >
         {t('login')}
-      </button>
+      </Link>
     </div>
   );
 };

@@ -2,6 +2,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import Header from '@/components/header';
+import { usePathname } from 'next/navigation';
 
 interface Props {
   children?: React.ReactNode;
@@ -19,10 +20,13 @@ export const NextProvider = ({ children }: Props) => {
 };
 
 export const NextLayout = ({ children }: Props) => {
+  const pathname = usePathname();
+  const isLoginPage = pathname === '/login';
+
   return (
     <>
-      <Header />
-      <div className="pt-14 md:pt-24">{children}</div>
+      {!isLoginPage && <Header />}
+      <div className={`${isLoginPage ? '' : 'pt-14 md:pt-24'}`}>{children}</div>
     </>
   );
 };
