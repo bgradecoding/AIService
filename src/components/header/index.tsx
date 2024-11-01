@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import cn from 'classnames';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiMenu, FiX, FiLogIn } from 'react-icons/fi';
 import { MENU_LIST } from '@/constants/biz';
 import LogoIcon from '../icons/Logo';
 import { useTranslations } from 'next-intl';
@@ -153,11 +153,11 @@ const LoginButton = () => {
   const t = useTranslations('common');
   return (
     <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
-      <Link
-        href="/login"
-        className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 md:px-6 md:py-2 md:text-base"
-      >
-        {t('login')}
+      <Link href="/login" className="flex items-center justify-center">
+        <FiLogIn className="w-6 h-6 md:hidden" />
+        <span className="hidden md:block bg-primary text-white px-6 py-2 rounded-md text-base font-medium transition duration-300 ease-in-out hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50">
+          {t('login')}
+        </span>
       </Link>
     </div>
   );
