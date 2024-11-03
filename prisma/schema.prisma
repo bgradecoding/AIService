@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,3 +6,121 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// 화법 마스터
+model SpeechMaster {
+  id              BigInt    @id @default(autoincrement()) @map("SPEECH_ID")
+  name            String    @map("SPEECH_NM") @db.VarChar(150)
+  typeCode        String    @map("SPEECH_TYPE_CD") @db.VarChar(10)
+  categoryCode    String    @map("SPEECH_CATEGORY_CD") @db.VarChar(10)
+  detail          String?   @map("SPEECH_DETAIL") @db.VarChar(4000)
+  useYn           String    @default("Y") @map("USE_YN") @db.VarChar(1)
+  regDate         DateTime  @default(now()) @map("REG_DTM")
+
+  sentences       SpeechSentence[]
+  courseMappings  CourseSpeechMap[]
+  learningHistory LearningHistory[]
+
+  @@map("TBL_SPEECH_MST")
+}
+
+// 화법 문장
+model SpeechSentence {
+  speechId        BigInt    @map("SPEECH_ID")
+  sentenceSeq     Int       @map("SENTENCE_SEQ")
+  content         String    @map("SENTENCE_CONTENT") @db.VarChar(4000)
+  sortOrder       Int       @map("SORT_ORDER")
+  voiceFilePath   String?   @map("VOICE_FILE_PATH") @db.VarChar(600)
+  useYn           String    @default("Y") @map("USE_YN") @db.VarChar(1)
+
+  speech          SpeechMaster @relation(fields: [speechId], references: [id])
+
+  @@id([speechId, sentenceSeq])
+  @@map("TBL_SPEECH_SENTENCE")
+}
+
+// 학습과정
+model LearningCourse {
+  id              BigInt    @id @default(autoincrement()) @map("COURSE_ID")
+  name            String    @map("COURSE_NM") @db.VarChar(600)
+  typeCode        String    @map("COURSE_TYPE_CD") @db.VarChar(10)
+  statusCode      String    @map("COURSE_STATUS_CD") @db.VarChar(10)
+  validStartDate  DateTime  @map("VALID_START_DTM")
+  validEndDate    DateTime? @map("VALID_END_DTM")
+  detail          String?   @map("COURSE_DETAIL") @db.VarChar(4000)
+  useYn           String    @default("Y") @map("USE_YN") @db.VarChar(1)
+  regDate         DateTime  @default(now()) @map("REG_DTM")
+
+  speechMappings  CourseSpeechMap[]
+  learningHistory LearningHistory[]
+
+  @@map("TBL_LEARNING_COURSE")
+}
+
+// 과정-화법 매핑
+model CourseSpeechMap {
+  courseId        BigInt    @map("COURSE_ID")
+  speechId        BigInt    @map("SPEECH_ID")
+  sortOrder       Int       @map("SORT_ORDER")
+  useYn           String    @default("Y") @map("USE_YN") @db.VarChar(1)
+
+  course          LearningCourse @relation(fields: [courseId], references: [id])
+  speech          SpeechMaster   @relation(fields: [speechId], references: [id])
+
+  @@id([courseId, speechId])
+  @@map("TBL_COURSE_SPEECH_MAP")
+}
+
+// 학습이력
+model LearningHistory {
+  id              BigInt    @id @default(autoincrement()) @map("LEARNING_ID")
+  courseId        BigInt    @map("COURSE_ID")
+  speechId        BigInt    @map("SPEECH_ID")
+  userId          String    @map("USER_ID") @db.VarChar(50)
+  statusCode      String    @map("LEARNING_STATUS_CD") @db.VarChar(10)
+  startDate       DateTime  @map("LEARNING_START_DTM")
+  endDate         DateTime? @map("LEARNING_END_DTM")
+  evalScore       Decimal?  @map("EVAL_SCORE") @db.Decimal(5,2)
+  regDate         DateTime  @default(now()) @map("REG_DTM")
+
+  course          LearningCourse @relation(fields: [courseId], references: [id])
+  speech          SpeechMaster   @relation(fields: [speechId], references: [id])
+  user            User           @relation(fields: [userId], references: [loginId])
+  practiceHistory PracticeHistory[]
+
+  @@map("TBL_LEARNING_HISTORY")
+}
+
+// 실습이력
+model PracticeHistory {
+  id              BigInt    @id @default(autoincrement()) @map("PRACTICE_ID")
+  learningId      BigInt    @map("LEARNING_ID")
+  practiceDate    DateTime  @map("PRACTICE_DTM")
+  voiceFilePath   String?   @map("VOICE_FILE_PATH") @db.VarChar(600)
+  videoFilePath   String?   @map("VIDEO_FILE_PATH") @db.VarChar(600)
+  aiAnalysisStatus String?  @map("AI_ANALYSIS_STATUS") @db.VarChar(10)
+  aiScore         Decimal?  @map("AI_SCORE") @db.Decimal(5,2)
+  regDate         DateTime  @default(now()) @map("REG_DTM")
+
+  learningHistory LearningHistory @relation(fields: [learningId], references: [id])
+
+  @@map("TBL_PRACTICE_HISTORY")
+}
+
+// 사용자
+model User {
+  id              BigInt    @id @default(autoincrement()) @map("USER_ID")
+  loginId         String    @unique @map("LOGIN_ID") @db.VarChar(50)
+  password        String    @map("PASSWORD") @db.VarChar(200)
+  name            String    @map("USER_NM") @db.VarChar(100)
+  email           String?   @map("EMAIL") @db.VarChar(100)
+  mobileNo        String?   @map("MOBILE_NO") @db.VarChar(20)
+  statusCode      String    @default("01") @map("USER_STATUS_CD") @db.VarChar(10)
+  lastLoginDate   DateTime? @map("LAST_LOGIN_DTM")
+  useYn           String    @default("Y") @map("USE_YN") @db.VarChar(1)
+  regDate         DateTime  @default(now()) @map("REG_DTM")
+
+  learningHistory LearningHistory[]
+
+  @@map("TBL_USER")
+} 
